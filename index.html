@@ -3,116 +3,166 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>For Isabel</title>
+    <title>For Isabel 💖</title>
     <style>
         body {
             margin: 0;
             padding: 0;
+            height: 100vh;
+            background: #ffecf2;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            background: #ffecf2;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            overflow: hidden;
-            text-align: center;
         }
 
-        #main-container {
+        /* Container for the question */
+        #question-page {
+            text-align: center;
             z-index: 10;
-            background: rgba(255, 255, 255, 0.8);
-            padding: 40px;
-            border-radius: 30px;
-            box-shadow: 0 10px 30px rgba(255, 105, 180, 0.3);
+            background: white;
+            padding: 50px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(255, 182, 193, 0.6);
         }
 
         h1 {
             color: #d63384;
             font-size: 2.5rem;
-            margin-bottom: 30px;
         }
 
-        .buttons {
+        .btn-container {
+            margin-top: 30px;
             display: flex;
-            gap: 20px;
             justify-content: center;
             align-items: center;
-        }
-
-        button {
-            padding: 15px 30px;
-            font-size: 1.2rem;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: transform 0.2s;
+            gap: 40px;
+            height: 100px;
         }
 
         #yesBtn {
+            padding: 15px 35px;
+            font-size: 1.5rem;
             background-color: #ff4d6d;
             color: white;
-            box-shadow: 0 4px 15px rgba(255, 77, 109, 0.4);
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            z-index: 20;
         }
 
         #noBtn {
+            padding: 8px 15px; /* Smaller size */
+            font-size: 0.9rem;
             background-color: #6c757d;
             color: white;
-            position: absolute;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            position: absolute; /* Allows it to move freely */
+            transition: 0.1s;
         }
 
-        /* Hearts Background Animation */
+        /* Success Page Overlay */
+        #success-page {
+            display: none; /* Hidden initially */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #ffccd5;
+            z-index: 1000;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        /* Floating Hearts Animation */
         .heart {
             position: absolute;
             color: #ff4d6d;
-            font-size: 20px;
-            top: -10%;
-            user-select: none;
-            z-index: 1;
             animation: fall linear forwards;
+            z-index: 1;
         }
 
         @keyframes fall {
             to { transform: translateY(110vh) rotate(360deg); }
         }
 
-        /* Success Screen */
-        #success-screen {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #ffccd5;
-            z-index: 100;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-        }
-
+        /* Balloons */
         .balloon {
             position: absolute;
             bottom: -100px;
-            width: 50px;
-            height: 70px;
-            background: #ff4d6d;
+            width: 40px;
+            height: 60px;
             border-radius: 50%;
             animation: floatUp 4s ease-in infinite;
         }
 
         @keyframes floatUp {
-            to { bottom: 110%; transform: translateX(50px); }
+            to { bottom: 110%; transform: translateX(30px); }
         }
     </style>
 </head>
 <body>
 
-    <div id="main-container">
+    <div id="question-page">
         <h1>Isabel, will you be my valentine? 💖</h1>
-        <div class="buttons">
-            <button id="yesBtn" onclick="showSuccess()">Yes!</button>
-            <button id="noBtn" onmouseover="moveButton()">No</button>
+        <div class="btn-container">
+            <button id="yesBtn" onclick="celebrate()">Yes!</button>
+            <button id="noBtn" onmouseover="moveNoButton()">No</button>
         </div>
     </div>
 
-    <div id
+    <div id="success-page">
+        <h1 style="font-size: 4rem; color: #ff4d6d;">YAY! 🎈💕</h1>
+        <h2 style="color: #d63384;">Can't wait to see you, Isabel!</h2>
+    </div>
+
+    <script>
+        // Create falling hearts background
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.top = '-5vh';
+            heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
+            heart.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 5000);
+        }
+        setInterval(createHeart, 300);
+
+        // Function to move the "No" button randomly
+        function moveNoButton() {
+            const btn = document.getElementById('noBtn');
+            // Calculate random positions (keeping it slightly away from edges)
+            const x = Math.random() * (window.innerWidth - 100);
+            const y = Math.random() * (window.innerHeight - 50);
+            
+            btn.style.left = x + 'px';
+            btn.style.top = y + 'px';
+        }
+
+        // Function to switch to the "Yes" page
+        function celebrate() {
+            document.getElementById('success-page').style.display = 'flex';
+            
+            // Add balloons
+            for(let i=0; i<40; i++) {
+                setTimeout(() => {
+                    const b = document.createElement('div');
+                    b.classList.add('balloon');
+                    b.style.left = Math.random() * 100 + 'vw';
+                    b.style.backgroundColor = `hsl(${Math.random() * 360}, 80%, 60%)`;
+                    document.getElementById('success-page').appendChild(b);
+                }, i * 150);
+            }
+        }
+    </script>
+</body>
+</html>
